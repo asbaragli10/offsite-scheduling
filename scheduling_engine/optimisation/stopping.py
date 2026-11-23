@@ -1,7 +1,7 @@
 """Archive progress monitoring independent of the SA transition rule."""
 from __future__ import annotations
 import numpy as np
-from jssp_merit.config import AnnealingConfig
+from scheduling_engine.config import AnnealingConfig
 from .hypervolume import dominated_hypervolume
 
 

@@ -7,8 +7,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from jssp_merit.model import RetainedJigSchedule
-from jssp_merit.model.calendar import SECONDS_PER_DAY, is_weekend
+from scheduling_engine.model import RetainedJigSchedule
+from scheduling_engine.model.calendar import SECONDS_PER_DAY, is_weekend
 from .archive_state import retained_jig_schedule_payload
 
 

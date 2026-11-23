@@ -93,23 +93,41 @@ the full production model before acceptance so that trolley availability, worker
 absences and shift boundaries remain part of the feasibility and performance
 assessment.
 
-*Problem description based on Section 3 of the accompanying manuscript,
-"Production Sequencing, Workforce Allocation and Internal Logistics Scheduling in
-Labour-Intensive Off-Site Construction: A Hybrid Simulated Annealing-MILP Approach",
-by Andrea Sbaraglia, Xiang Xie, Edgar Segovia and Mohamad Kassem.*
-
 ## Framework
 
 ![Hybrid scheduling framework connecting greedy initialisation, search calibration, parallel simulated annealing, the production model, the Pareto archive and optional MILP refinement.](docs/figures/framework.png)
 
-*Figure 2. Hybrid scheduling framework. The main stages are summarised below, following
-Section 4 of the accompanying manuscript.*
+*Figure 2. Hybrid scheduling framework. The main stages are summarised below.*
 
 - **Initialisation:** Build an earliest-due-date schedule with two jigs staffed by two workers each. Use 100 neighbour samples to calibrate objective scales and an initial temperature targeting 80% acceptance of typical dominated moves.
 - **Parallel Simulated Annealing:** Explore fabrication-sequence and daily staffing changes through parallel neighbour evaluations, applying SA acceptance, temperature cooling and stopping criteria.
 - **Production Model:** Simulate fabrication, trolley circulation and jig assembly with shift calendars and worker absences, checking feasibility and calculating tardiness, setup duration and labour cost.
 - **Pareto Archive:** Retain distinct non-dominated schedules representing delivery, setup and labour-cost trade-offs, and export them when the search ends.
 - **Optional MILP solver:** Refine an eligible archived schedule through local sequencing or staffing changes. Validate proposals through the full production model before updating the archive and current SA schedule.
+
+## Getting started
+
+1. Clone the repository, or open your existing local copy:
+
+   ```sh
+   git clone https://github.com/asbaragli10/offsite-scheduling.git
+   cd offsite-scheduling
+   ```
+
+2. Create a Python environment and install the dependencies using the
+   [Install](#install) instructions below. Install the hybrid requirements if you
+   want MILP refinement.
+3. Prepare your own product CSV using the [Input format](#input-format). No input
+   datasets or previous results are included.
+4. Set the placeholders in `scheduling_engine/paths.py`, or provide both paths
+   explicitly when running:
+
+   ```sh
+   python main.py --data "PATH_TO_INPUT_CSV" --output-dir "PATH_TO_OUTPUT_DIRECTORY"
+   ```
+
+5. Inspect the schedules and KPIs in the new run subdirectory under your chosen
+   output directory. Use `python main.py --help` to explore the available settings.
 
 ## Install
 
@@ -138,7 +156,7 @@ python -m pip install -r requirements-hybrid.txt
 No input datasets, previous outputs, fitted distributions or calibration files are
 included. The input CSV reader and result writers remain functional.
 
-Edit these placeholders in `jssp_merit/paths.py`:
+Edit these placeholders in `scheduling_engine/paths.py`:
 
 ```python
 INPUT_CSV = Path("path/to/input/products.csv")
@@ -202,16 +220,15 @@ common local data/output locations and tabular data files are ignored.
 ## Code layout
 
 - `main.py`: optimiser entry point.
-- `jssp_merit/paths.py`: input/output placeholders.
-- `jssp_merit/model/`: coupled fabrication, trolley and assembly simulation.
-- `jssp_merit/neighbourhoods/`: sequencing and workforce search moves.
-- `jssp_merit/optimisation/`: Pareto annealing, archive and MILP integration.
-- `jssp_merit/data/`: CSV loading and validation code, with no datasets.
-- `jssp_merit/reporting/`: schedule exports, KPIs and provenance.
+- `scheduling_engine/paths.py`: input/output placeholders.
+- `scheduling_engine/model/`: coupled fabrication, trolley and assembly simulation.
+- `scheduling_engine/neighbourhoods/`: sequencing and workforce search moves.
+- `scheduling_engine/optimisation/`: Pareto annealing, archive and MILP integration.
+- `scheduling_engine/data/`: CSV loading and validation code, with no datasets.
+- `scheduling_engine/reporting/`: schedule exports, KPIs and provenance.
 - `MILP_post_processing/{machine,jigs}/`: MILP solvers used by the optimiser.
 - `tests/`: portable hybrid integration checks.
 
-The original Python package name `jssp_merit` is retained to preserve imports.
 Paper-specific campaigns, remote deployment scripts, input data and previous
 results are excluded from this standalone copy.
 

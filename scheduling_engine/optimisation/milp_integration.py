@@ -7,7 +7,7 @@ from time import perf_counter
 
 import numpy as np
 
-from jssp_merit.model import InfeasibleSchedule, RetainedJigSchedule, Solution, evaluate_solution
+from scheduling_engine.model import InfeasibleSchedule, RetainedJigSchedule, Solution, evaluate_solution
 from .archive import ParetoEntry, archive_accepts, update_archive
 
 

@@ -11,10 +11,10 @@ from unittest.mock import patch
 
 import numpy as np
 
-from jssp_merit.cli import build_parser
-from jssp_merit.model import Solution
-from jssp_merit.optimisation.archive import ParetoEntry
-from jssp_merit.optimisation.milp_integration import MilpConfig, run_checkpoint, select_target
+from scheduling_engine.cli import build_parser
+from scheduling_engine.model import Solution
+from scheduling_engine.optimisation.archive import ParetoEntry
+from scheduling_engine.optimisation.milp_integration import MilpConfig, run_checkpoint, select_target
 
 
 def entry(tardiness=100., setup=10800., labour=41000.):
@@ -88,7 +88,7 @@ class CheckpointTests(unittest.TestCase):
         replays = [evaluation(target.objectives)] + [evaluation(o) for o in candidate_objectives]
         with ExitStack() as stack:
             replay = stack.enter_context(patch(
-                'jssp_merit.optimisation.milp_integration.evaluate_solution', side_effect=replays))
+                'scheduling_engine.optimisation.milp_integration.evaluate_solution', side_effect=replays))
             stack.enter_context(patch('MILP_post_processing.machine.milp_neighborhood.rank_windows',
                 return_value=[SimpleNamespace(start=0, size=4, coil=100, tardiness_seconds=100.)]))
             stack.enter_context(patch('MILP_post_processing.machine.milp_neighborhood.solve_window',

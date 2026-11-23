@@ -12,8 +12,8 @@ from time import perf_counter
 import numpy as np
 from scipy.optimize import Bounds, LinearConstraint, milp
 
-from jssp_merit.model import InfeasibleSchedule, RetainedJigSchedule, Solution, evaluate_solution
-from jssp_merit.model.calendar import SECONDS_PER_DAY, is_weekend
+from scheduling_engine.model import InfeasibleSchedule, RetainedJigSchedule, Solution, evaluate_solution
+from scheduling_engine.model.calendar import SECONDS_PER_DAY, is_weekend
 
 
 @dataclass(frozen=True)

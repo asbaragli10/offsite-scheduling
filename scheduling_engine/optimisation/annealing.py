@@ -9,14 +9,14 @@ from dataclasses import dataclass
 from time import perf_counter
 import numpy as np
 
-from jssp_merit.config import AnnealingConfig, NeighbourhoodConfig, ProblemConfig
-from jssp_merit.data import ProductData
-from jssp_merit.model import (
+from scheduling_engine.config import AnnealingConfig, NeighbourhoodConfig, ProblemConfig
+from scheduling_engine.data import ProductData
+from scheduling_engine.model import (
     OBJECTIVE_NAMES, InfeasibleSchedule, RetainedJigSchedule, ScheduleEvaluation,
     Solution, dominates, evaluate_solution, pareto_deterioration,
 )
-from jssp_merit.neighbourhoods import MoveContext, build_move_context, propose_solution
-from jssp_merit.neighbourhoods.selector import is_noop_move, move_family, retains_jig_schedule
+from scheduling_engine.neighbourhoods import MoveContext, build_move_context, propose_solution
+from scheduling_engine.neighbourhoods.selector import is_noop_move, move_family, retains_jig_schedule
 from .archive import ParetoEntry, archive_accepts, lexicographic_entry, prune_archive, update_archive
 from .hypervolume import dominated_hypervolume
 from .stopping import ProgressMonitor

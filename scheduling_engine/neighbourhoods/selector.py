@@ -6,10 +6,10 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from jssp_merit.config import NeighbourhoodConfig, ProblemConfig
-from jssp_merit.data import ProductData
-from jssp_merit.model.simulator import ScheduleEvaluation
-from jssp_merit.model.types import Solution
+from scheduling_engine.config import NeighbourhoodConfig, ProblemConfig
+from scheduling_engine.data import ProductData
+from scheduling_engine.model.simulator import ScheduleEvaluation
+from scheduling_engine.model.types import Solution
 
 from .machine import reinsert_block_within_deadline, swap_global_blocks
 from .workforce import REDISTRIBUTION_NAMES, propose_staffing_plan

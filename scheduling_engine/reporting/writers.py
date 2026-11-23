@@ -11,11 +11,11 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from jssp_merit.config import AnnealingConfig, NeighbourhoodConfig, ProblemConfig
-from jssp_merit.data import ProductData
-from jssp_merit.model import OBJECTIVE_NAMES, ScheduleEvaluation, Solution, evaluate_solution
-from jssp_merit.optimisation import AnnealingResult
-from jssp_merit.neighbourhoods.selector import move_family
+from scheduling_engine.config import AnnealingConfig, NeighbourhoodConfig, ProblemConfig
+from scheduling_engine.data import ProductData
+from scheduling_engine.model import OBJECTIVE_NAMES, ScheduleEvaluation, Solution, evaluate_solution
+from scheduling_engine.optimisation import AnnealingResult
+from scheduling_engine.neighbourhoods.selector import move_family
 
 from .archive_state import retained_jig_schedule_payload
 from .kpis import write_kpi_bundle

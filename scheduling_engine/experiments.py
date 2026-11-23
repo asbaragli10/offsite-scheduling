@@ -10,9 +10,9 @@ import re
 import tempfile
 import numpy as np
 
-from jssp_merit.config import NeighbourhoodConfig
-from jssp_merit.model import OBJECTIVE_NAMES
-from jssp_merit.optimisation import estimate_initial_temperature
+from scheduling_engine.config import NeighbourhoodConfig
+from scheduling_engine.model import OBJECTIVE_NAMES
+from scheduling_engine.optimisation import estimate_initial_temperature
 
 
 MODEL_VERSION = "sa-3obj-finite-trolleys-v3"

@@ -8,11 +8,11 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from jssp_merit.config import ProblemConfig
-from jssp_merit.data import ProductData
-from jssp_merit.model.calendar import SECONDS_PER_DAY, is_weekend
-from jssp_merit.model.simulator import ScheduleEvaluation
-from jssp_merit.model.types import Solution
+from scheduling_engine.config import ProblemConfig
+from scheduling_engine.data import ProductData
+from scheduling_engine.model.calendar import SECONDS_PER_DAY, is_weekend
+from scheduling_engine.model.simulator import ScheduleEvaluation
+from scheduling_engine.model.types import Solution
 
 
 DELAY_BUCKETS = (

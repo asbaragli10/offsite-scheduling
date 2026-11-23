@@ -13,7 +13,7 @@ import pandas as pd
 
 def snapshot_source(destination: Path) -> dict:
     root = Path(__file__).resolve().parents[2]
-    paths = list((root / "jssp_merit").rglob("*.py"))
+    paths = list((root / "scheduling_engine").rglob("*.py"))
     paths += [root / name for name in ("main.py", "requirements.txt", "pyproject.toml", "README.md")]
     paths += [root / "MILP_post_processing" / side / "milp_neighborhood.py"
               for side in ("machine", "jigs")]

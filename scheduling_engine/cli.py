@@ -2,8 +2,8 @@
 from __future__ import annotations
 import argparse
 from pathlib import Path
-from jssp_merit.config import AnnealingConfig, JigConfig, MachineConfig, ProblemConfig, TrolleyConfig
-from jssp_merit.paths import INPUT_CSV, OUTPUT_DIRECTORY
+from scheduling_engine.config import AnnealingConfig, JigConfig, MachineConfig, ProblemConfig, TrolleyConfig
+from scheduling_engine.paths import INPUT_CSV, OUTPUT_DIRECTORY
 
 
 def build_parser():

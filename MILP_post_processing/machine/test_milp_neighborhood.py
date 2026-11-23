@@ -8,8 +8,8 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from jssp_merit.data import ProductData
-from jssp_merit.model import Solution
+from scheduling_engine.data import ProductData
+from scheduling_engine.model import Solution
 
 from .milp_neighborhood import Window, rank_windows, solve_window
 

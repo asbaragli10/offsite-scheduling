@@ -7,8 +7,8 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 
-from jssp_merit.config import MachineConfig, TrolleyConfig
-from jssp_merit.data import ProductData
+from scheduling_engine.config import MachineConfig, TrolleyConfig
+from scheduling_engine.data import ProductData
 
 
 SECONDS_PER_DAY = 24 * 60 * 60

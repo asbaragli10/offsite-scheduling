@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from jssp_merit.data import ProductData
+from scheduling_engine.data import ProductData
 
 
 def _coil_runs(sequence: np.ndarray, coils: np.ndarray) -> list[tuple[int, int]]:

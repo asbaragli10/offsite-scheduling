@@ -14,8 +14,8 @@ import numpy as np
 from scipy.optimize import Bounds, LinearConstraint, milp
 from scipy.sparse import coo_matrix
 
-from jssp_merit.data import ProductData
-from jssp_merit.model import ScheduleEvaluation, Solution
+from scheduling_engine.data import ProductData
+from scheduling_engine.model import ScheduleEvaluation, Solution
 
 
 @dataclass(frozen=True)

@@ -9,8 +9,8 @@ import math
 
 import numpy as np
 
-from jssp_merit.config import ProblemConfig
-from jssp_merit.data import ProductData
+from scheduling_engine.config import ProblemConfig
+from scheduling_engine.data import ProductData
 
 from .calendar import MachineSegment, MachineTimeline, SECONDS_PER_DAY, is_weekend
 from .types import RetainedJigSchedule, Solution, validate_solution

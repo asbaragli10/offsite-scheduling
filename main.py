@@ -12,18 +12,18 @@ from time import perf_counter
 import numpy as np
 import pandas as pd
 
-from jssp_merit.cli import build_parser, problem_from_args, annealing_from_args
-from jssp_merit.data import load_products
-from jssp_merit.experiments import MODEL_VERSION, MOVE_PRESETS, create_run_directory, neighbourhood_for_preset, shared_calibration
-from jssp_merit.experiments import fixed_calibration, sha256_file
-from jssp_merit.model import build_initial_solution, evaluate_solution
-from jssp_merit.model.calendar import SECONDS_PER_DAY
-from jssp_merit.optimisation import run_parallel_pareto_annealing
-from jssp_merit.optimisation.milp_integration import MilpConfig
-from jssp_merit.reporting import write_outputs
-from jssp_merit.reporting.writers import write_milp_attempts
-from jssp_merit.reporting.provenance import snapshot_source, write_manifest
-from jssp_merit.paths import configure_io_paths
+from scheduling_engine.cli import build_parser, problem_from_args, annealing_from_args
+from scheduling_engine.data import load_products
+from scheduling_engine.experiments import MODEL_VERSION, MOVE_PRESETS, create_run_directory, neighbourhood_for_preset, shared_calibration
+from scheduling_engine.experiments import fixed_calibration, sha256_file
+from scheduling_engine.model import build_initial_solution, evaluate_solution
+from scheduling_engine.model.calendar import SECONDS_PER_DAY
+from scheduling_engine.optimisation import run_parallel_pareto_annealing
+from scheduling_engine.optimisation.milp_integration import MilpConfig
+from scheduling_engine.reporting import write_outputs
+from scheduling_engine.reporting.writers import write_milp_attempts
+from scheduling_engine.reporting.provenance import snapshot_source, write_manifest
+from scheduling_engine.paths import configure_io_paths
 
 
 def main(argv: list[str] | None = None) -> int:

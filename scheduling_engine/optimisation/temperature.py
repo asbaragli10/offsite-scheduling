@@ -6,21 +6,21 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from jssp_merit.config import NeighbourhoodConfig, ProblemConfig
-from jssp_merit.data import ProductData
-from jssp_merit.model import (
+from scheduling_engine.config import NeighbourhoodConfig, ProblemConfig
+from scheduling_engine.data import ProductData
+from scheduling_engine.model import (
     InfeasibleSchedule,
     ScheduleEvaluation,
     Solution,
     evaluate_solution,
     pareto_deterioration,
 )
-from jssp_merit.neighbourhoods import (
+from scheduling_engine.neighbourhoods import (
     build_move_context,
     is_redistribution_move,
     propose_solution,
 )
-from jssp_merit.neighbourhoods.selector import retains_jig_schedule
+from scheduling_engine.neighbourhoods.selector import retains_jig_schedule
 
 
 @dataclass(frozen=True)

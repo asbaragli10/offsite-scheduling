@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from jssp_merit.model import RetainedJigSchedule, Solution
+from scheduling_engine.model import RetainedJigSchedule, Solution
 
 
 @dataclass

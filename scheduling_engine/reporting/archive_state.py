@@ -6,7 +6,7 @@ from collections.abc import Mapping, Sequence
 
 import numpy as np
 
-from jssp_merit.model import RetainedJigSchedule
+from scheduling_engine.model import RetainedJigSchedule
 
 
 def retained_jig_schedule_payload(
