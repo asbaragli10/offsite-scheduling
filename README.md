@@ -1,10 +1,124 @@
-# Offsite Scheduling
+# Off-site construction problem
 
-Multi-objective off-site production scheduling integrating fabrication sequencing,
-daily workforce allocation and finite-trolley logistics. Parallel Pareto simulated
-annealing searches for trade-offs between total tardiness, machine setup duration
-and labour cost. Optional local MILP refinement improves machine sequencing and
-assembly-jig staffing, with every proposal evaluated through the full simulator.
+This repository addresses integrated production scheduling in a labour-intensive
+off-site construction factory. Fabrication, assembly and internal material
+transport share resources and constrain one another: a fabrication sequence can
+only support delivery commitments when assembly capacity, worker availability and
+trolley circulation are considered together.
+
+![Production system linking the fabrication sequence, reusable trolley circulation, parallel assembly jigs and daily workforce allocation.](docs/figures/problem.png)
+
+*Figure 1. Coupled fabrication, internal logistics and assembly. The fabrication
+sequence determines the order in which products enter the system, while daily
+workforce allocation determines the capacity available at each assembly jig.
+Loaded trolleys move products downstream, and empty trolleys return for reuse.
+The four jigs shown illustrate the system; the number of jigs is configurable.*
+
+## Production system and material flow
+
+A single fabrication machine processes products one at a time. Each product has
+a coil family, a fabrication duration, handling and assembly workloads, and a
+production deadline. Changing coil family between consecutive products requires
+a machine setup; the first product requires no setup. Consecutive products form
+trolley batches limited by the carrier capacity, with a final partial batch
+allowed.
+
+An empty trolley must be available before fabrication of a batch begins. If the
+finite fleet is fully occupied downstream, fabrication waits for a trolley to
+return. After the batch is fabricated, the machine operator delivers its loaded
+trolley to the assembly queue. Products become available for handling when the
+trolley arrives, but fabrication remains suspended until the operator returns.
+
+Products are assigned to parallel assembly jigs. At each jig, workers first unload
+and position a product's components, then complete its assembly before starting
+the next product in the committed processing order. Handling work depends on stud
+count, while assembly work depends on screw count. Processing follows working-day
+shift calendars and can pause across shifts, weekends and unstaffed days without
+losing completed work or changing the product's position.
+
+## Workforce allocation and trolley returns
+
+The number of workers assigned to each jig can vary by day. Workers collaborate
+on the current product, with additional workers providing diminishing productivity
+gains under the default productivity model. An unstaffed jig has no processing
+capacity. Staffing is bounded per jig; the current formulation does not impose an
+additional factory-wide workforce limit.
+
+A trolley becomes empty as soon as handling finishes for every product it carries,
+even if assembly is still underway. One worker from the jig completing the final
+handling operation returns the trolley to the machine area and then walks back.
+The trolley is available for reuse upon arrival at the machine, while the worker
+remains unavailable for the complete round trip. That absence reduces the jig's
+processing rate or temporarily stops work if no other worker remains. Transport
+duties must fit within the relevant working shift.
+
+This creates a feedback loop: staffing affects unloading and trolley release;
+trolley availability affects fabrication; and transport duties reduce the capacity
+available for subsequent assembly.
+
+## Scheduling decisions
+
+The optimiser directly controls two decisions:
+
+| Decision | Representation | Role |
+| --- | --- | --- |
+| Fabrication sequence | $\pi$ | A permutation defining the order in which every product is fabricated. |
+| Daily workforce allocation | $W = [w_{d,s}]$ | The integer number of workers assigned to jig $s$ on calendar day $d$. |
+
+Jig assignments, labelled **J** in the figure, and per-jig processing orders,
+labelled **O**, are associated schedule attributes rather than independent search
+variables. The production model derives or retains them according to the selected
+neighbourhood move, then evaluates the resulting fabrication, handling, transport
+and assembly timings together.
+
+## Objectives and solution approach
+
+Feasible schedules are compared against three objectives, all minimised:
+
+| Objective | Definition |
+| --- | --- |
+| Total tardiness | Sum of each product's positive delay between final assembly completion and its deadline. Elapsed delays include nights and weekends. |
+| Labour cost | Cost of complete paid machine-crew and assigned jig-worker shifts through their respective completion cutoffs, including idle time and transport duties. |
+| Machine setup duration | Total productive setup time caused by coil-family changes in the fabrication sequence, excluding waiting, transport and non-working periods. |
+
+These objectives can conflict: grouping products by coil family reduces setups,
+while delivery priorities may favour a different sequence, and additional staffing
+can increase capacity at a higher labour cost. The optimiser therefore retains a
+Pareto archive of non-dominated schedules representing alternative trade-offs.
+
+Parallel simulated annealing explores fabrication-sequence and workforce changes.
+Optional mixed-integer linear programming (MILP) refines selected machine
+subsequences or jig staffing decisions. Every MILP proposal is replayed through
+the full production model before acceptance so that trolley availability, worker
+absences and shift boundaries remain part of the feasibility and performance
+assessment.
+
+*Problem description based on Section 3 of the accompanying manuscript,
+"Production Sequencing, Workforce Allocation and Internal Logistics Scheduling in
+Labour-Intensive Off-Site Construction: A Hybrid Simulated Annealing-MILP Approach",
+by Andrea Sbaraglia, Xiang Xie, Edgar Segovia and Mohamad Kassem.*
+
+## Framework
+
+![Hybrid scheduling framework connecting greedy initialisation, search calibration, parallel simulated annealing, the production model, the Pareto archive and optional MILP refinement.](docs/figures/framework.png)
+
+*Figure 2. Hybrid scheduling framework. The boxes are summarised below, following
+Section 4 of the accompanying manuscript.*
+
+- **Greedy Schedule:** Start with an earliest-due-date fabrication sequence and two active jigs, each staffed by two workers.
+- **Search Calibration:** Use 100 neighbour samples to estimate objective scales and an initial temperature targeting 80% acceptance of typical dominated moves.
+- **Parallel Simulated Annealing:** Evaluate neighbour batches in parallel, randomly select one feasible candidate for SA acceptance, then cool and check stopping criteria.
+- **Sequencing:** Change the fabrication order through coil-block reinsertion or swaps.
+- **Jig Staffing:** Redistribute workers or open and close jig-day assignments.
+- **Production Model:** Evaluate the coupled schedule to calculate total tardiness, machine setup duration and labour cost.
+- **Fabrication:** Process products sequentially, accounting for coil changes, shifts, trolley availability and operator transport duties.
+- **Full Trolley:** Deliver completed batches to the assembly queue and release their products for handling.
+- **Jigs:** Unload and assemble products according to jig assignments, processing orders and available staffing.
+- **Empty Trolley:** Return unloaded trolleys for reuse while temporarily removing one worker from the originating jig.
+- **Pareto Archive:** Retain distinct non-dominated schedules up to the archive limit and export them when the search ends.
+- **Select Archive Target:** At MILP checkpoints, select the lowest-tardiness archived schedule within the setup and labour-cost limits.
+- **Solve Local MILP:** Reorder 24 same-coil products or adjust jig-day staffing by one worker within a three-working-day window (defaults).
+- **Validate Full Replay:** Re-evaluate each proposal in the complete model; accepted improvements update both the archive and the current SA schedule.
 
 ## Install
 
