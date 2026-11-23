@@ -102,23 +102,14 @@ by Andrea Sbaraglia, Xiang Xie, Edgar Segovia and Mohamad Kassem.*
 
 ![Hybrid scheduling framework connecting greedy initialisation, search calibration, parallel simulated annealing, the production model, the Pareto archive and optional MILP refinement.](docs/figures/framework.png)
 
-*Figure 2. Hybrid scheduling framework. The boxes are summarised below, following
+*Figure 2. Hybrid scheduling framework. The main stages are summarised below, following
 Section 4 of the accompanying manuscript.*
 
-- **Greedy Schedule:** Start with an earliest-due-date fabrication sequence and two active jigs, each staffed by two workers.
-- **Search Calibration:** Use 100 neighbour samples to estimate objective scales and an initial temperature targeting 80% acceptance of typical dominated moves.
-- **Parallel Simulated Annealing:** Evaluate neighbour batches in parallel, randomly select one feasible candidate for SA acceptance, then cool and check stopping criteria.
-- **Sequencing:** Change the fabrication order through coil-block reinsertion or swaps.
-- **Jig Staffing:** Redistribute workers or open and close jig-day assignments.
-- **Production Model:** Evaluate the coupled schedule to calculate total tardiness, machine setup duration and labour cost.
-- **Fabrication:** Process products sequentially, accounting for coil changes, shifts, trolley availability and operator transport duties.
-- **Full Trolley:** Deliver completed batches to the assembly queue and release their products for handling.
-- **Jigs:** Unload and assemble products according to jig assignments, processing orders and available staffing.
-- **Empty Trolley:** Return unloaded trolleys for reuse while temporarily removing one worker from the originating jig.
-- **Pareto Archive:** Retain distinct non-dominated schedules up to the archive limit and export them when the search ends.
-- **Select Archive Target:** At MILP checkpoints, select the lowest-tardiness archived schedule within the setup and labour-cost limits.
-- **Solve Local MILP:** Reorder 24 same-coil products or adjust jig-day staffing by one worker within a three-working-day window (defaults).
-- **Validate Full Replay:** Re-evaluate each proposal in the complete model; accepted improvements update both the archive and the current SA schedule.
+- **Initialisation:** Build an earliest-due-date schedule with two jigs staffed by two workers each. Use 100 neighbour samples to calibrate objective scales and an initial temperature targeting 80% acceptance of typical dominated moves.
+- **Parallel Simulated Annealing:** Explore fabrication-sequence and daily staffing changes through parallel neighbour evaluations, applying SA acceptance, temperature cooling and stopping criteria.
+- **Production Model:** Simulate fabrication, trolley circulation and jig assembly with shift calendars and worker absences, checking feasibility and calculating tardiness, setup duration and labour cost.
+- **Pareto Archive:** Retain distinct non-dominated schedules representing delivery, setup and labour-cost trade-offs, and export them when the search ends.
+- **Optional MILP solver:** Refine an eligible archived schedule through local sequencing or staffing changes. Validate proposals through the full production model before updating the archive and current SA schedule.
 
 ## Install
 
